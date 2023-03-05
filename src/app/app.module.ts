@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import {SplitterModule} from 'primeng/splitter';
 import {InputTextareaModule} from 'primeng/inputtextarea';
 import { FormsModule } from '@angular/forms';
-import { JsonToXmlConverterModule } from './json-to-xml-converter/json-to-xml-converter.module';
+import { ConverterAndFormatterModule } from './converter-and-formatter/converter-and-formatter.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -17,7 +17,7 @@ import { JsonToXmlConverterModule } from './json-to-xml-converter/json-to-xml-co
     SplitterModule,
     InputTextareaModule,
     FormsModule ,
-    JsonToXmlConverterModule
+    ConverterAndFormatterModule
   ],
   
   providers: [],
