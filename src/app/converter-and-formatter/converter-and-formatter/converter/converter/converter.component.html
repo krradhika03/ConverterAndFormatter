@@ -1,0 +1,34 @@
+<div style="text-align: center">
+    <h2 style="color:green">Formatter & Converter</h2>
+   
+</div>
+
+<p-splitter [style]="{ height: '200px' }" styleClass="p-mb-5" layout="horizontal">
+    <ng-template pTemplate>
+        <div class="p-col p-d-flex p-ai-center
+            p-jc-center">
+            <textarea type="text" rows="20" cols="60" pInputTextarea [(ngModel)]="sourceText"
+                (input)="changeDropdownValue()"></textarea>
+
+        </div>
+    </ng-template>
+    <ng-template pTemplate>
+        <div class="container">
+            <div class="row" style="position: relative;left:7%">
+              <div class="col-sm-12">
+                <h4>Choose the format to convert</h4>
+                <p-dropdown [options]="lang" placeholder="Select a format" optionLabel="name" [showClear]="true"
+            (onChange)="changeDropdownValue()" [(ngModel)]="selectedFormat">
+        </p-dropdown>
+              </div>
+            </div>
+          </div>
+       
+    </ng-template>
+    <ng-template pTemplate>
+        <div class="p-col p-d-flex p-ai-center
+            p-jc-center">
+            <textarea type="text" rows="20" cols="60" pInputTextarea value="{{finalText}}" disabled="true"></textarea>
+        </div>
+    </ng-template>
+</p-splitter>
