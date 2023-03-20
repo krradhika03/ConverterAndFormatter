@@ -46,9 +46,15 @@ export class ConverterComponent implements OnInit {
             }
           case 'XML TO JSON':
             {
+              var parseString = require('xml2js').parseString;
+              var xml: any;
+              parseString(this.sourceText, function (err, result) {
+                xml = JSON.stringify(result, null, 2);
+              });
+              this.finalText = xml;
               break;
             }
-          default : {
+          default: {
             break;
           }
         }

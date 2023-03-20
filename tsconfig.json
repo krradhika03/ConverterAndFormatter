@@ -2,7 +2,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": "src",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": false,
@@ -23,7 +23,16 @@
       "ES2022",
       "dom"
     ],
-    "strictPropertyInitialization":false
+    "strictPropertyInitialization":false,
+    "paths":{
+        "timers":[
+          "node_modules/timers-browserify"
+        ],
+        "stream":[
+          "node_modules/stream-browserify"
+        ],
+    },
+    "types":["node"],   
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
