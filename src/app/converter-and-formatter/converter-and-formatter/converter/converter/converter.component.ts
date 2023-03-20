@@ -22,6 +22,12 @@ export class ConverterComponent implements OnInit {
   lang = [
     { name: "JSON TO XML" },
     { name: "XML TO JSON" },
+    { name: "Excel TO JSON" },
+    { name: "JSON TO EXCEL" },
+    { name: "XML TO EXCEL" },
+    { name: "EXCEL TO XML" },
+    { name: "CSV TO JSON" },
+    { name: "JSON TO CSV" }
   ];
 
   ngOnInit(): void {
@@ -30,12 +36,22 @@ export class ConverterComponent implements OnInit {
 
   changeDropdownValue() {
     this.finalText = '';
-    if (this.selectedFormat && this.selectedFormat.name == 'JSON TO XML') {
-      console.log('test');
-      console.log(this.lang);
-      console.log(this.selectedFormat);
+    if (this.selectedFormat) {
       if (this.sourceText) {
-        this.finalText = JsonToXML.parse("data", JSON.parse(this.sourceText));
+        switch (this.selectedFormat.name) {
+          case 'JSON TO XML':
+            {
+              this.finalText = JsonToXML.parse("data", JSON.parse(this.sourceText));
+              break;
+            }
+          case 'XML TO JSON':
+            {
+              break;
+            }
+          default : {
+            break;
+          }
+        }
       }
     }
 
