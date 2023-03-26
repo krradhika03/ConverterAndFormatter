@@ -13,9 +13,10 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/formatter",
+            "outputPath": "docs",
             "index": "src/index.html",
             "main": "src/main.ts",
+            "allowedCommonJsDependencies": [ "rxjs"],
             "polyfills": [
               "zone.js"
             ],
