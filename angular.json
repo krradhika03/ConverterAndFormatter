@@ -16,7 +16,11 @@
             "outputPath": "docs",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "allowedCommonJsDependencies": [ "rxjs"],
+            "allowedCommonJsDependencies": [
+              "lodash",
+              "js2xmlparser",
+              "xml2js"
+           ],
             "polyfills": [
               "zone.js"
             ],
