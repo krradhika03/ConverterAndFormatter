@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
@@ -8,6 +9,7 @@ import {InputTextareaModule} from 'primeng/inputtextarea';
 import { FormsModule } from '@angular/forms';
 import { ConverterAndFormatterModule } from './converter-and-formatter/converter-and-formatter.module';
 import { DropdownModule } from 'primeng/dropdown';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -17,6 +19,7 @@ import { DropdownModule } from 'primeng/dropdown';
     SplitterModule,
     InputTextareaModule,
     ConverterAndFormatterModule,
+    HttpClientModule
   
   ],
   

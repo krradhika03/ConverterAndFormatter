@@ -1,3 +1,4 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import * as JsonToXML from "js2xmlparser";
 
@@ -12,7 +13,7 @@ interface Format {
   styleUrls: ['./converter.component.css']
 })
 export class ConverterComponent implements OnInit {
-
+  fileName = '';
   array: [] = [];
   sourceText: any;
   finalText: any;
@@ -29,6 +30,9 @@ export class ConverterComponent implements OnInit {
     { name: "CSV TO JSON" },
     { name: "JSON TO CSV" }
   ];
+  constructor(public http: HttpClient) {
+
+  }
 
   ngOnInit(): void {
   }
@@ -63,4 +67,25 @@ export class ConverterComponent implements OnInit {
 
   }
 
+  onUpload(event) {
+    console.log('test');
+    const file: File = event.target.files[0];
+    if (file) {
+      this.fileName = file.name;
+      const formData = new FormData();
+      formData.append("thumbnail", file);
+      const httpOptions = {
+        headers: new HttpHeaders({
+
+          "ContentType": "multipart/form-data",
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+
+        })
+      }
+
+      const upload = this.http.post<any>("https://us-central1-visionapidemo-381801.cloudfunctions.net/processUploadLabel", formData, httpOptions);
+      upload.subscribe();
+    }
+  }
 }
