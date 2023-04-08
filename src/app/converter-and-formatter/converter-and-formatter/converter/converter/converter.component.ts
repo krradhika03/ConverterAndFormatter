@@ -18,6 +18,7 @@ export class ConverterComponent implements OnInit {
   sourceText: any;
   finalText: any;
   title = 'formatter';
+  file: File = null;
 
   selectedFormat: Format;
   lang = [
@@ -30,6 +31,8 @@ export class ConverterComponent implements OnInit {
     { name: "CSV TO JSON" },
     { name: "JSON TO CSV" }
   ];
+  validList: any;
+  invalidList: any;
   constructor(public http: HttpClient) {
 
   }
@@ -67,13 +70,13 @@ export class ConverterComponent implements OnInit {
 
   }
 
-  onUpload(event) {
+  upload() {
     console.log('test');
-    const file: File = event.target.files[0];
-    if (file) {
-      this.fileName = file.name;
+//    const file: File = event.target.files[0];
+    if (this.file) {
+      this.fileName = this.file.name;
       const formData = new FormData();
-      formData.append("thumbnail", file);
+      formData.append("thumbnail", this.file);
       const httpOptions = {
         headers: new HttpHeaders({
 
@@ -83,9 +86,23 @@ export class ConverterComponent implements OnInit {
 
         })
       }
+    
+     this.http.post<any>("https://us-central1-visionapidemo-381801.cloudfunctions.net/processUploadLabel", formData, httpOptions).
+      subscribe(res=>{
+          if(res)
+          {
+            this.validList= res.valid;
+            this.invalidList = res.invalid;
+          }
 
-      const upload = this.http.post<any>("https://us-central1-visionapidemo-381801.cloudfunctions.net/processUploadLabel", formData, httpOptions);
-      upload.subscribe();
+      });
     }
-  }
+    }
+
+    onUpload(event:any)
+    {
+      
+    this.file= event.target.files[0];
+   
+    }
 }

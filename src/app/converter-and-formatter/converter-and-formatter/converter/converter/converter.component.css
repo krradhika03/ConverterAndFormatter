@@ -2,3 +2,20 @@
 {
     border:1px solid #ffffff !important;
 }
+
+::ng-deep .p-splitter-gutter
+{
+    width: 0px !important;
+}
+textarea {
+    overflow-y: scroll;
+    height: 400px;
+    resize: none; /* Remove this if you want the user to resize the textarea */
+}
+ .reSplit
+ {
+    position: relative !important;
+    left: 7% !important;
+ }
+
+

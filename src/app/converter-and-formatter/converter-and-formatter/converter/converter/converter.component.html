@@ -1,20 +1,34 @@
-
-
 <div style="text-align: center">
-    <h2 style="color:green">Formatter & Converter</h2>
-    <input type ="file" (change)="onUpload($event)" >
+    <h2 style="color:green;    font-size: -webkit-xxx-large;
+    ">Scan Label</h2>
+    <div class="container">
+        <div class="row mt-5">
+            <div class="col-md-4"></div>
+          <div class="col-md-4">
+            <div class="mb-3">
+             
+              <input (change)="onUpload($event)" class="form-control" type="file" id="formFile">
+              <button (click)="upload()" type="button" class="btn btn-primary mt-3">Upload</button>
+            </div>
+          </div>
+          <div class="col-md-4"></div>
+        </div>
+       </div>
+    <!-- <input type="file" (change)="onUpload($event)"> -->
 </div>
 
-<p-splitter [style]="{ height: '200px' }" styleClass="p-mb-5" layout="horizontal">
+
+<p-splitter [style]="{ height: '200px' }" styleClass="p-mb-5" layout="horizontal" class="reSplit">
     <ng-template pTemplate>
         <div class="p-col p-d-flex p-ai-center
-            p-jc-center">
-            <textarea type="text" rows="20" cols="60" pInputTextarea [(ngModel)]="sourceText"
-                (input)="changeDropdownValue()"></textarea>
+            p-jc-center" style ="flex-basis: calc(50% - -379px);">
+            <!--   <textarea type="text" rows="20" cols="60" pInputTextarea [(ngModel)]="sourceText"
+                (input)="changeDropdownValue()"></textarea> -->
+            <textarea type="text" rows="20" cols="60" pInputTextarea value="{{validList}}" disabled="true"></textarea>
 
         </div>
     </ng-template>
-    <ng-template pTemplate>
+    <!--    <ng-template pTemplate>
         <div class="container">
             <div class="row">
               <div class="col-sm-12">
@@ -26,11 +40,11 @@
             </div>
           </div>
        
-    </ng-template>
+    </ng-template> -->
     <ng-template pTemplate>
         <div class="p-col p-d-flex p-ai-center
             p-jc-center">
-            <textarea type="text" rows="20" cols="60" pInputTextarea value="{{finalText}}" disabled="true"></textarea>
+            <textarea type="text" rows="20" cols="60" pInputTextarea value="{{invalidList}}" disabled="true"></textarea>
         </div>
     </ng-template>
 </p-splitter>
