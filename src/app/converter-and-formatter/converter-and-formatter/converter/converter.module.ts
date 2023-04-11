@@ -7,6 +7,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DropdownModule } from 'primeng/dropdown';
 import { ConverterComponent } from './converter/converter.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 
 
@@ -20,7 +21,8 @@ import { ConverterComponent } from './converter/converter.component';
     SplitterModule,
     InputTextareaModule,
     FormsModule ,
-    CommonModule
+    CommonModule,
+    NgxSpinnerModule
   ],
   exports :[
     ConverterComponent

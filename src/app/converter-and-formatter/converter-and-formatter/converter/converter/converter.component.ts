@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import * as JsonToXML from "js2xmlparser";
+import { NgxSpinnerService } from "ngx-spinner";  
 
 interface Format {
   name: string,
@@ -33,7 +34,7 @@ export class ConverterComponent implements OnInit {
   ];
   validList: any;
   invalidList: any;
-  constructor(public http: HttpClient) {
+  constructor(public http: HttpClient, private SpinnerService: NgxSpinnerService) {
 
   }
 
@@ -86,7 +87,7 @@ export class ConverterComponent implements OnInit {
 
         })
       }
-    
+    this.SpinnerService.show();
      this.http.post<any>("https://us-central1-visionapidemo-381801.cloudfunctions.net/processUploadLabel", formData, httpOptions).
       subscribe(res=>{
           if(res)
@@ -94,7 +95,7 @@ export class ConverterComponent implements OnInit {
             this.validList= res.valid;
             this.invalidList = res.invalid;
           }
-
+          this.SpinnerService.hide();
       });
     }
     }

@@ -9,6 +9,7 @@ import {InputTextareaModule} from 'primeng/inputtextarea';
 import { FormsModule } from '@angular/forms';
 import { ConverterAndFormatterModule } from './converter-and-formatter/converter-and-formatter.module';
 import { DropdownModule } from 'primeng/dropdown';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { DropdownModule } from 'primeng/dropdown';
     SplitterModule,
     InputTextareaModule,
     ConverterAndFormatterModule,
-    HttpClientModule
+    HttpClientModule,
+    NgxSpinnerModule
   
   ],
   
