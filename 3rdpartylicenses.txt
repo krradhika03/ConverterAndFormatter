@@ -340,6 +340,9 @@ Apache-2.0
    limitations under the License.
 
 
+ngx-spinner
+MIT
+
 primeicons
 MIT
 MIT License
