@@ -1,6 +1,5 @@
 <div style="text-align: center">
-    <h2 style="color:green;    font-size: -webkit-xxx-large;
-    ">Scan Label</h2>
+    <h1 >SCAN LABEL</h1>
     <div class="container">
         <div class="row mt-5">
             <div class="col-md-4"></div>
@@ -23,6 +22,7 @@
     <ng-template pTemplate>
         <div class="p-col p-d-flex p-ai-center
             p-jc-center" style ="flex-basis: calc(50% - -379px);">
+            <h2  style="color:slategrey;">Valid</h2>
             <!--   <textarea type="text" rows="20" cols="60" pInputTextarea [(ngModel)]="sourceText"
                 (input)="changeDropdownValue()"></textarea> -->
             <textarea type="text" rows="20" cols="60" pInputTextarea value="{{validList}}" disabled="true"></textarea>
@@ -45,6 +45,7 @@
     <ng-template pTemplate>
         <div class="p-col p-d-flex p-ai-center
             p-jc-center">
+            <h2 class="borderforHeading" style="color: slategray;">Invalid</h2>
             <textarea type="text" rows="20" cols="60" pInputTextarea value="{{invalidList}}" disabled="true"></textarea>
         </div>
     </ng-template>
