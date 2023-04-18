@@ -16,40 +16,30 @@
     <!-- <input type="file" (change)="onUpload($event)"> -->
 </div>
 
-
-
-<p-splitter [style]="{ height: '200px' }" styleClass="p-mb-5" layout="horizontal" class="reSplit">
-    <ng-template pTemplate>
-        <div class="p-col p-d-flex p-ai-center
-            p-jc-center" style ="flex-basis: calc(50% - -379px);">
-            <h2  style="color:slategrey;">Valid</h2>
-            <!--   <textarea type="text" rows="20" cols="60" pInputTextarea [(ngModel)]="sourceText"
-                (input)="changeDropdownValue()"></textarea> -->
-            <textarea type="text" rows="20" cols="60" pInputTextarea value="{{validList}}" disabled="true"></textarea>
-
-        </div>
-    </ng-template>
-    <!--    <ng-template pTemplate>
-        <div class="container">
-            <div class="row">
-              <div class="col-sm-12">
-                <h4>Choose the format to convert</h4>
-                <p-dropdown [options]="lang" placeholder="Select a format" optionLabel="name" [showClear]="true"
-            (onChange)="changeDropdownValue()" [(ngModel)]="selectedFormat">
-        </p-dropdown>
-              </div>
+<div class="row" *ngIf="shipToAddress && trackingNumber">
+    <div class="col-3"></div>
+    <div class="col-4">
+        <div class="card" style="width: 25rem;height: 20rem;">
+            <div class="card-body">
+                <h5 class="card-title">SHIP TO</h5>
+                <p style="white-space: pre-line" class="card-text">{{shipToAddress}}</p>
             </div>
-          </div>
-       
-    </ng-template> -->
-    <ng-template pTemplate>
-        <div class="p-col p-d-flex p-ai-center
-            p-jc-center">
-            <h2 class="borderforHeading" style="color: slategray;">Invalid</h2>
-            <textarea type="text" rows="20" cols="60" pInputTextarea value="{{invalidList}}" disabled="true"></textarea>
         </div>
-    </ng-template>
-</p-splitter>
+    </div>
+    <div class="col-3">
+        <div class="card" style="width: 25rem;height: 5rem;">
+            <div class="card-body">
+                <h5 class="card-title">TRACKING #</h5>
+                <p class="card-text">{{trackingNumber}}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-2"></div>
+</div>
+
+
+
+
 
 <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">  
     <p style="color: white">Please Wait. </p>  

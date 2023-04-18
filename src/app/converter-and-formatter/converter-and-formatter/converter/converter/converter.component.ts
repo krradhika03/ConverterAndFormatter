@@ -35,6 +35,8 @@ export class ConverterComponent implements OnInit {
   ];
   validList: any;
   invalidList: any;
+  shipToAddress: any;
+  trackingNumber: any;
   constructor(public http: HttpClient, private SpinnerService: NgxSpinnerService) {
 
   }
@@ -118,6 +120,22 @@ export class ConverterComponent implements OnInit {
           if (responseDao) {
             this.validList = responseDao.valid;
             this.invalidList = responseDao.invalid;
+            if (responseDao.blockData) {
+
+             let index = responseDao.blockData.findIndex(e =>e.includes("SHIP"));
+             if(index){
+             console.log(index)
+             console.log(responseDao.blockData[index + 1])
+             this.shipToAddress = responseDao.blockData[index + 1];
+             }
+
+             let indexTrack = responseDao.blockData.findIndex(e =>e.includes("TRACKING"));
+             if(indexTrack){
+             console.log(indexTrack)
+             console.log(responseDao.blockData[indexTrack])
+             this.trackingNumber = responseDao.blockData[indexTrack].split("#:")[1];
+             }
+            }
           }
         }
       });
