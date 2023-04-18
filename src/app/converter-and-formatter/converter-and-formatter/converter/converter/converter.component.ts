@@ -37,7 +37,7 @@ export class ConverterComponent implements OnInit {
   invalidList: any;
   shipToAddress: any;
   trackingNumber: any;
-  invalidImage:any;
+  invalidImage: any;
   constructor(public http: HttpClient, private SpinnerService: NgxSpinnerService) {
 
   }
@@ -83,9 +83,8 @@ export class ConverterComponent implements OnInit {
     return result;
   }
   upload() {
-    console.log('test');
     this.invalidImage = null;
-    this.trackingNumber =null;
+    this.trackingNumber = null;
     this.shipToAddress = null;
     //    const file: File = event.target.files[0];
     if (this.fileName) {
@@ -105,9 +104,7 @@ export class ConverterComponent implements OnInit {
       }
       this.SpinnerService.show();
       this.http.post<String>("https://us-central1-visionapidemo-381801.cloudfunctions.net/processUploadLabel", formData, httpOptions).subscribe(async res => {
-        console.log(JSON.stringify(res));
         if (res) {
-          console.log(res)
           var count = 1;
           var responseDao;
           do {
@@ -115,7 +112,6 @@ export class ConverterComponent implements OnInit {
               await this.delay(10000);
             }
             responseDao = await this.getDaoResponseAndWait(this.fileName);
-            console.log(responseDao)
             count++;
           } while (responseDao == null || count > 5);
 
@@ -123,29 +119,24 @@ export class ConverterComponent implements OnInit {
           res = responseDao;
           if (responseDao) {
             if (responseDao.blockData) {
-             let indexTrack = responseDao.blockData.findIndex(e =>e.includes("TRACKING"));
-             let indexship = responseDao.blockData.findIndex(e =>e.includes("SHIP"));
-             let indexUPSText = responseDao.blockData.findIndex(e =>e.includes("UPS"));
-             if(indexTrack >-1 && indexship > -1 && indexUPSText > -1){
-             console.log(indexTrack)
-             console.log(responseDao.blockData[indexTrack-3])
-             console.log(responseDao.blockData[indexTrack].split("#")[1])
-             this.shipToAddress =this.findIndexWithLongestLength(responseDao.blockData,indexship,indexTrack);
-             this.shipToAddress =   this.shipToAddress.replace("SHIP","");
-             this.shipToAddress =   this.shipToAddress.replace("TO","");
+              let indexTrack = responseDao.blockData.findIndex(e => e.includes("TRACKING"));
+              let indexship = responseDao.blockData.findIndex(e => e.includes("SHIP"));
+              let indexUPSText = responseDao.blockData.findIndex(e => e.includes("UPS"));
+              if (indexTrack > -1 && indexship > -1 && indexUPSText > -1) {
 
-             this.trackingNumber = responseDao.blockData[indexTrack].split("#")[1];
-            if(this.shipToAddress ==null || this.shipToAddress ==undefined)
-            {
-              this.invalidImage = "Invalid image";
-            }
-             }else 
-             {
-              this.invalidImage = "Invalid image";
-             }
+                this.shipToAddress = this.findIndexWithLongestLength(responseDao.blockData, indexship, indexTrack);
+                this.shipToAddress = this.shipToAddress.replace("SHIP", "");
+                this.shipToAddress = this.shipToAddress.replace("TO", "");
 
-            }else
-            {
+                this.trackingNumber = responseDao.blockData[indexTrack].split("#")[1];
+                if (this.shipToAddress == null || this.shipToAddress == undefined) {
+                  this.invalidImage = "Invalid image";
+                }
+              } else {
+                this.invalidImage = "Invalid image";
+              }
+
+            } else {
               this.invalidImage = "Invalid image";
             }
           }
@@ -155,7 +146,9 @@ export class ConverterComponent implements OnInit {
   }
 
   onUpload(event: any) {
-
+    this.invalidImage = null;
+    this.trackingNumber = null;
+    this.shipToAddress = null;
     this.file = event.target.files[0];
     this.fileName = event.target.files[0].name;
     //add validation
@@ -170,21 +163,18 @@ export class ConverterComponent implements OnInit {
 
       })
     }
-    console.log(fileName.toUpperCase())
     return this.http.post<any>("https://us-central1-visionapidemo-381801.cloudfunctions.net/daoRetrieve", fileName.toUpperCase(), httpOptions).pipe(take(1)).toPromise();
   }
 
-  findIndexWithLongestLength(blockData,shipindex,indexTrack) : any {
+  findIndexWithLongestLength(blockData, shipindex, indexTrack): any {
 
-    let tempData :string[]= [];
-    blockData.forEach((element,index) => {
-      if(index>shipindex && index <indexTrack)
-      {
+    let tempData: string[] = [];
+    blockData.forEach((element, index) => {
+      if (index > shipindex && index < indexTrack) {
         tempData.push(element);
       }
-      
+
     });
-    console.log(tempData.sort(function (a, b) { return b.length - a.length })[0]);
     return tempData.sort(function (a, b) { return b.length - a.length })[0];
 
   }
