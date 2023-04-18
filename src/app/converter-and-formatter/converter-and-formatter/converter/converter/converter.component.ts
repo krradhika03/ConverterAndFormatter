@@ -148,6 +148,7 @@ export class ConverterComponent implements OnInit {
 
     this.file = event.target.files[0];
     this.fileName = event.target.files[0].name;
+    //add validation
 
   }
   getDaoRetrieve(fileName: string): Promise<any> {
