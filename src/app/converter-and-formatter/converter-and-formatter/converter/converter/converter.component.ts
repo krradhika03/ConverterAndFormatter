@@ -37,6 +37,7 @@ export class ConverterComponent implements OnInit {
   invalidList: any;
   shipToAddress: any;
   trackingNumber: any;
+  invalidImage:any;
   constructor(public http: HttpClient, private SpinnerService: NgxSpinnerService) {
 
   }
@@ -83,6 +84,8 @@ export class ConverterComponent implements OnInit {
   }
   upload() {
     console.log('test');
+    this.trackingNumber =null;
+    this.shipToAddress = null;
     //    const file: File = event.target.files[0];
     if (this.fileName) {
       // this.fileName = JSON.parse(JSON.stringify(this.file.filename));
@@ -121,21 +124,17 @@ export class ConverterComponent implements OnInit {
             this.validList = responseDao.valid;
             this.invalidList = responseDao.invalid;
             if (responseDao.blockData) {
-
-            /*  let index = responseDao.blockData.findIndex(e =>e.includes("SHIP"));
-             if(index){
-             console.log(index)
-             console.log(responseDao.blockData[index + 1])
-             this.shipToAddress = responseDao.blockData[index + 1];
-             } */
-
              let indexTrack = responseDao.blockData.findIndex(e =>e.includes("TRACKING"));
-             if(indexTrack){
+             let indexship = responseDao.blockData.findIndex(e =>e.includes("SHIP"));
+             if(indexTrack >-1 && indexship > -1){
              console.log(indexTrack)
              console.log(responseDao.blockData[indexTrack-3])
              console.log(responseDao.blockData[indexTrack].split("#")[1])
              this.trackingNumber = responseDao.blockData[indexTrack].split("#")[1];
              this.shipToAddress = responseDao.blockData[indexTrack - 3];
+             }else 
+             {
+              this.invalidImage = "Invalid image";
              }
 
             }

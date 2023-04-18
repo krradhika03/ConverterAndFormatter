@@ -37,8 +37,15 @@
     <div class="col-2"></div>
 </div>
 
-
-
+ <div class="row" *ngIf="invalidImage">
+    <div class="col-4"></div>
+    <div class="col-4">
+        <p *ngIf="invalidImage" style="white-space: pre-line" class="alert alert-success">Invalid Image</p>
+    </div>
+    <div class="col-4">
+    </div>
+</div>
+ 
 
 
 <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="default" type="ball-spin-clockwise">  
