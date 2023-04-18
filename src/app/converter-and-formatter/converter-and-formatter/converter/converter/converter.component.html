@@ -19,18 +19,18 @@
 <div class="row" *ngIf="shipToAddress && trackingNumber">
     <div class="col-3"></div>
     <div class="col-4">
-        <div class="card" style="width: 25rem;height: 20rem;">
+        <div class="card card-text alert alert-success" style="width: 20rem;height: 20rem;">
             <div class="card-body">
                 <h5 class="card-title">SHIP TO</h5>
-                <p style="white-space: pre-line" class="card-text">{{shipToAddress}}</p>
+                <p style="white-space: pre-line" >{{shipToAddress}}</p>
             </div>
         </div>
     </div>
     <div class="col-3">
-        <div class="card" style="width: 25rem;height: 5rem;">
+        <div class="card card-text alert alert-success" style="width: 25rem;height: 10rem;">
             <div class="card-body">
                 <h5 class="card-title">TRACKING #</h5>
-                <p class="card-text">{{trackingNumber}}</p>
+                <p >{{trackingNumber}}</p>
             </div>
         </div>
     </div>
@@ -40,7 +40,7 @@
  <div class="row" *ngIf="invalidImage">
     <div class="col-4"></div>
     <div class="col-4">
-        <p *ngIf="invalidImage" style="white-space: pre-line" class="alert alert-success">Invalid Image</p>
+        <p *ngIf="invalidImage" style="white-space: pre-line" class="alert alert-danger">Invalid Image</p>
     </div>
     <div class="col-4">
     </div>

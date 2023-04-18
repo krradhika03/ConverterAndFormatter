@@ -84,6 +84,7 @@ export class ConverterComponent implements OnInit {
   }
   upload() {
     console.log('test');
+    this.invalidImage = null;
     this.trackingNumber =null;
     this.shipToAddress = null;
     //    const file: File = event.target.files[0];
@@ -126,12 +127,13 @@ export class ConverterComponent implements OnInit {
             if (responseDao.blockData) {
              let indexTrack = responseDao.blockData.findIndex(e =>e.includes("TRACKING"));
              let indexship = responseDao.blockData.findIndex(e =>e.includes("SHIP"));
-             if(indexTrack >-1 && indexship > -1){
+             let indexUPSText = responseDao.blockData.findIndex(e =>e.includes("UPS"));
+             if(indexTrack >-1 && indexship > -1 && indexUPSText > -1){
              console.log(indexTrack)
              console.log(responseDao.blockData[indexTrack-3])
              console.log(responseDao.blockData[indexTrack].split("#")[1])
+             this.shipToAddress =this.findIndexWithLongestLength(responseDao.blockData,indexship,indexTrack);
              this.trackingNumber = responseDao.blockData[indexTrack].split("#")[1];
-             this.shipToAddress = responseDao.blockData[indexTrack - 3];
              }else 
              {
               this.invalidImage = "Invalid image";
@@ -164,5 +166,22 @@ export class ConverterComponent implements OnInit {
     return this.http.post<any>("https://us-central1-visionapidemo-381801.cloudfunctions.net/daoRetrieve", fileName.toUpperCase(), httpOptions).pipe(take(1)).toPromise();
   }
 
+  findIndexWithLongestLength(blockData,shipindex,indexTrack) : any {
+
+    let tempData :string[]= [];
+    blockData.forEach((element,index) => {
+      if(index>shipindex && index <indexTrack)
+      {
+        tempData.push(element);
+      }
+      
+    });
+    console.log(tempData.sort(function (a, b) { return b.length - a.length })[0]);
+    return tempData.sort(function (a, b) { return b.length - a.length })[0];
+
+  }
 }
+
+
+
 
