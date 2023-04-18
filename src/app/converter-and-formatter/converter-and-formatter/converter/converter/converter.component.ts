@@ -122,8 +122,6 @@ export class ConverterComponent implements OnInit {
           this.SpinnerService.hide();
           res = responseDao;
           if (responseDao) {
-            this.validList = responseDao.valid;
-            this.invalidList = responseDao.invalid;
             if (responseDao.blockData) {
              let indexTrack = responseDao.blockData.findIndex(e =>e.includes("TRACKING"));
              let indexship = responseDao.blockData.findIndex(e =>e.includes("SHIP"));
@@ -133,12 +131,22 @@ export class ConverterComponent implements OnInit {
              console.log(responseDao.blockData[indexTrack-3])
              console.log(responseDao.blockData[indexTrack].split("#")[1])
              this.shipToAddress =this.findIndexWithLongestLength(responseDao.blockData,indexship,indexTrack);
+             this.shipToAddress =   this.shipToAddress.replace("SHIP","");
+             this.shipToAddress =   this.shipToAddress.replace("TO","");
+
              this.trackingNumber = responseDao.blockData[indexTrack].split("#")[1];
+            if(this.shipToAddress ==null || this.shipToAddress ==undefined)
+            {
+              this.invalidImage = "Invalid image";
+            }
              }else 
              {
               this.invalidImage = "Invalid image";
              }
 
+            }else
+            {
+              this.invalidImage = "Invalid image";
             }
           }
         }
