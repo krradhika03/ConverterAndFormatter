@@ -36,8 +36,10 @@ export class ConverterComponent implements OnInit {
   validList: any;
   invalidList: any;
   shipToAddress: any;
+  billingInfo :any;
   trackingNumber: any;
   invalidImage: any;
+  trackingConfidenceValue: any;
   constructor(public http: HttpClient, private SpinnerService: NgxSpinnerService) {
 
   }
@@ -86,6 +88,7 @@ export class ConverterComponent implements OnInit {
     this.invalidImage = null;
     this.trackingNumber = null;
     this.shipToAddress = null;
+    this.billingInfo= null;
     //    const file: File = event.target.files[0];
     if (this.fileName) {
       // this.fileName = JSON.parse(JSON.stringify(this.file.filename));
@@ -119,18 +122,27 @@ export class ConverterComponent implements OnInit {
           res = responseDao;
           if (responseDao) {
             if (responseDao.blockData) {
-              let indexTrack = responseDao.blockData.findIndex(e => e.includes("TRACKING"));
-              let indexship = responseDao.blockData.findIndex(e => e.includes("SHIP"));
-              let indexUPSText = responseDao.blockData.findIndex(e => e.includes("UPS"));
+              let indexTrack = responseDao.blockData.findIndex(e => e.labelText.includes("TRACKING"));
+              let indexship = responseDao.blockData.findIndex(e => e.labelText.includes("SHIP"));
+              let indexUPSText = responseDao.blockData.findIndex(e => e.labelText.includes("UPS"));
+              let indexBillingInfo = responseDao.blockData.findIndex(e => e.labelText.includes("BILLING"));
+              
               if (indexTrack > -1 && indexship > -1 && indexUPSText > -1) {
 
                 this.shipToAddress = this.findIndexWithLongestLength(responseDao.blockData, indexship, indexTrack);
                 this.shipToAddress = this.shipToAddress.replace("SHIP", "");
                 this.shipToAddress = this.shipToAddress.replace("TO", "");
 
-                this.trackingNumber = responseDao.blockData[indexTrack].split("#")[1];
+                this.trackingNumber = responseDao.blockData[indexTrack].labelText.split("#")[1];
+                this.trackingConfidenceValue =  responseDao.blockData[indexTrack].confidence;
+                this.billingInfo =  responseDao.blockData[indexBillingInfo].labelText.split("BILLING")[1];
                 if (this.shipToAddress == null || this.shipToAddress == undefined) {
                   this.invalidImage = "Invalid image";
+                }else if ((this.trackingConfidenceValue *100) < 90)
+                {
+                  this.shipToAddress = null;
+                  this.trackingNumber = null;
+                  this.invalidImage = "Uploaded image is not clear, please upload proper image";
                 }
               } else {
                 this.invalidImage = "Invalid image";
@@ -171,7 +183,7 @@ export class ConverterComponent implements OnInit {
     let tempData: string[] = [];
     blockData.forEach((element, index) => {
       if (index > shipindex && index < indexTrack) {
-        tempData.push(element);
+        tempData.push(element.labelText);
       }
 
     });

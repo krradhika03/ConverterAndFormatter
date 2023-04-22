@@ -25,10 +25,14 @@
         </div>
     </div>
     <div class="col-3">
-        <div class="card card-text alert alert-success" style="width: 25rem;height: 11rem;">
+        <div class="card card-text alert alert-success" style="width: 25rem;height: 15rem;">
             <div class="card-body">
                 <h5 class="card-title">TRACKING #</h5>
                 <p >{{trackingNumber}}</p>
+            </div>
+            <div class="card-body" *ngIf="billingInfo">
+                <h5 class="card-title">BILLING</h5>
+                <p >{{billingInfo}}</p>
             </div>
         </div>
     </div>
@@ -38,7 +42,7 @@
  <div class="row" *ngIf="invalidImage">
     <div class="col-4"></div>
     <div class="col-4">
-        <p *ngIf="invalidImage" style="white-space: pre-line" class="alert alert-danger">Invalid Image</p>
+        <p *ngIf="invalidImage" style="white-space: pre-line" class="alert alert-danger">{{invalidImage}}</p>
     </div>
     <div class="col-4">
     </div>
