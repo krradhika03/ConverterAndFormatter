@@ -123,22 +123,26 @@ export class ConverterComponent implements OnInit {
           if (responseDao) {
             if (responseDao.blockData) {
               let indexTrack = responseDao.blockData.findIndex(e => e.labelText.includes("TRACKING"));
-              let indexship = responseDao.blockData.findIndex(e => e.labelText.includes("SHIP"));
+              let indexship = responseDao.blockData.findIndex(e => e.labelText.includes("SHIP TO"));
               let indexUPSText = responseDao.blockData.findIndex(e => e.labelText.includes("UPS"));
               let indexBillingInfo = responseDao.blockData.findIndex(e => e.labelText.includes("BILLING"));
               
               if (indexTrack > -1 && indexship > -1 && indexUPSText > -1) {
 
                 this.shipToAddress = this.findIndexWithLongestLength(responseDao.blockData, indexship, indexTrack);
+               if(this.shipToAddress){
                 this.shipToAddress = this.shipToAddress.replace("SHIP", "");
                 this.shipToAddress = this.shipToAddress.replace("TO", "");
+               }
 
                 this.trackingNumber = responseDao.blockData[indexTrack].labelText.split("#")[1];
                 this.trackingConfidenceValue =  responseDao.blockData[indexTrack].confidence;
+                if(indexBillingInfo != -1){
                 this.billingInfo =  responseDao.blockData[indexBillingInfo].labelText.split("BILLING")[1];
+                }
                 if (this.shipToAddress == null || this.shipToAddress == undefined) {
                   this.invalidImage = "Invalid image";
-                }else if ((this.trackingConfidenceValue *100) < 90)
+                }else if ((this.trackingConfidenceValue *100) < 95)
                 {
                   this.shipToAddress = null;
                   this.trackingNumber = null;
