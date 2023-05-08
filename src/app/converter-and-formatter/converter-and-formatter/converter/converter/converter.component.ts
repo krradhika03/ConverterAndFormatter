@@ -36,7 +36,7 @@ export class ConverterComponent implements OnInit {
   validList: any;
   invalidList: any;
   shipToAddress: any;
-  billingInfo :any;
+  billingInfo: any;
   trackingNumber: any;
   invalidImage: any;
   trackingConfidenceValue: any;
@@ -80,15 +80,15 @@ export class ConverterComponent implements OnInit {
   private delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
-  async getDaoResponseAndWait(fileName: string) {
-    let result = await this.getDaoRetrieve(fileName);
+  async waitUntilImageDataPresent(fileName: string) {
+    let result = await this.getImageData(fileName);
     return result;
   }
   upload() {
     this.invalidImage = null;
     this.trackingNumber = null;
     this.shipToAddress = null;
-    this.billingInfo= null;
+    this.billingInfo = null;
     //    const file: File = event.target.files[0];
     if (this.fileName) {
       // this.fileName = JSON.parse(JSON.stringify(this.file.filename));
@@ -106,44 +106,43 @@ export class ConverterComponent implements OnInit {
         })
       }
       this.SpinnerService.show();
-      this.http.post<String>("https://us-central1-visionapidemo-381801.cloudfunctions.net/processUploadLabel", formData, httpOptions).subscribe(async res => {
-        if (res) {
+      this.http.post<String>("https://us-central1-visionapidemo-381801.cloudfunctions.net/processUploadLabel", formData, httpOptions).subscribe(async result => {
+        if (result) {
           var count = 1;
-          var responseDao;
+          var dbData;
           do {
             if (count > 1) {
               await this.delay(10000);
             }
-            responseDao = await this.getDaoResponseAndWait(this.fileName);
+            dbData = await this.waitUntilImageDataPresent(this.fileName);
             count++;
-          } while (responseDao == null || count > 5);
+          } while (dbData == null || count > 5);
 
           this.SpinnerService.hide();
-          res = responseDao;
-          if (responseDao) {
-            if (responseDao.blockData) {
-              let indexTrack = responseDao.blockData.findIndex(e => e.labelText.includes("TRACKING"));
-              let indexship = responseDao.blockData.findIndex(e => e.labelText.includes("SHIP TO"));
-              let indexUPSText = responseDao.blockData.findIndex(e => e.labelText.includes("UPS"));
-              let indexBillingInfo = responseDao.blockData.findIndex(e => e.labelText.includes("BILLING"));
-              
+          result = dbData;
+          if (dbData) {
+            if (dbData.blockData) {
+              let indexTrack = dbData.blockData.findIndex(e => e.labelText.includes("TRACKING"));
+              let indexship = dbData.blockData.findIndex(e => e.labelText.includes("SHIP TO"));
+              let indexUPSText = dbData.blockData.findIndex(e => e.labelText.includes("UPS"));
+              let indexBillingInfo = dbData.blockData.findIndex(e => e.labelText.includes("BILLING"));
+
               if (indexTrack > -1 && indexship > -1 && indexUPSText > -1) {
 
-                this.shipToAddress = this.findIndexWithLongestLength(responseDao.blockData, indexship, indexTrack);
-               if(this.shipToAddress){
-                this.shipToAddress = this.shipToAddress.replace("SHIP", "");
-                this.shipToAddress = this.shipToAddress.replace("TO", "");
-               }
+                this.shipToAddress = this.findIndexWithLongestLength(dbData.blockData, indexship, indexTrack);
+                if (this.shipToAddress) {
+                  this.shipToAddress = this.shipToAddress.replace("SHIP", "");
+                  this.shipToAddress = this.shipToAddress.replace("TO", "");
+                }
 
-                this.trackingNumber = responseDao.blockData[indexTrack].labelText.split("#")[1];
-                this.trackingConfidenceValue =  responseDao.blockData[indexTrack].confidence;
-                if(indexBillingInfo != -1){
-                this.billingInfo =  responseDao.blockData[indexBillingInfo].labelText.split("BILLING")[1];
+                this.trackingNumber = dbData.blockData[indexTrack].labelText.split("#")[1];
+                this.trackingConfidenceValue = dbData.blockData[indexTrack].confidence;
+                if (indexBillingInfo != -1) {
+                  this.billingInfo = dbData.blockData[indexBillingInfo].labelText.split("BILLING")[1];
                 }
                 if (this.shipToAddress == null || this.shipToAddress == undefined) {
                   this.invalidImage = "Invalid image";
-                }else if ((this.trackingConfidenceValue *100) < 95)
-                {
+                } else if ((this.trackingConfidenceValue * 100) < 95) {
                   this.shipToAddress = null;
                   this.trackingNumber = null;
                   this.invalidImage = "Uploaded image is not clear, please upload proper image";
@@ -170,7 +169,7 @@ export class ConverterComponent implements OnInit {
     //add validation
 
   }
-  getDaoRetrieve(fileName: string): Promise<any> {
+  getImageData(fileName: string): Promise<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         "ContentType": "application/json",
@@ -179,7 +178,7 @@ export class ConverterComponent implements OnInit {
 
       })
     }
-    return this.http.post<any>("https://us-central1-visionapidemo-381801.cloudfunctions.net/daoRetrieve", fileName.toUpperCase(), httpOptions).pipe(take(1)).toPromise();
+    return this.http.post<any>("https://us-central1-visionapidemo-381801.cloudfunctions.net/imageData", fileName.toUpperCase(), httpOptions).pipe(take(1)).toPromise();
   }
 
   findIndexWithLongestLength(blockData, shipindex, indexTrack): any {
@@ -191,7 +190,7 @@ export class ConverterComponent implements OnInit {
       }
 
     });
-    return tempData.sort(function (a, b) { return b.length - a.length })[0];
+    return tempData ? tempData.sort(function (a, b) { return b.length - a.length })[0] :null;
 
   }
 }
